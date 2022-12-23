@@ -1,6 +1,6 @@
 # MarkdownNotesApp
 
-URL: [Link to App](https://notesapp-c9688.web.app/)
+[Link to App](https://notesapp-c9688.web.app/)
 
 [Tutorial I followed](https://www.youtube.com/watch?v=j898RGRw0b4&t=1s)
 
