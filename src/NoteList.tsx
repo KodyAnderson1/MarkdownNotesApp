@@ -1,6 +1,6 @@
-import { Form, Stack, Row, Col, Button, Card, Badge, Modal } from "react-bootstrap";
-import { Link } from "react-router-dom";
 import { useMemo, useState } from "react";
+import { Badge, Button, Card, Col, Form, Modal, Row, Stack } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import ReactSelect from "react-select";
 import { Tag } from "./App";
 import styles from "./NotesList.module.css";
@@ -29,17 +29,14 @@ type EditTagsModalProps = {
 export function NoteList({ availableTags, notes, onUpdateTag, onDeleteTag }: NoteListProps) {
   const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
   const [title, setTitle] = useState("");
-
-  const [show, setShow] = useState(false);
-  //   const [title, setTitle] = useState("");
+  const [editTagsModalIsOpen, setEditTagsModalIsOpen] = useState(false);
 
   const filteredNotes = useMemo(() => {
     return notes.filter((note) => {
       return (
-        title === "" ||
-        (note.title.toLowerCase().includes(title.toLowerCase()) &&
-          (selectedTags.length === 0 ||
-            selectedTags.every((tag) => note.tags.some((noteTag) => noteTag.id == tag.id))))
+        (title === "" || note.title.toLowerCase().includes(title.toLowerCase())) &&
+        (selectedTags.length === 0 ||
+          selectedTags.every((tag) => note.tags.some((noteTag) => noteTag.id === tag.id)))
       );
     });
   }, [title, selectedTags, notes]);
@@ -55,7 +52,7 @@ export function NoteList({ availableTags, notes, onUpdateTag, onDeleteTag }: Not
             <Link to="/new">
               <Button variant="primary">Create</Button>
             </Link>
-            <Button onClick={() => setShow(true)} variant="outline-secondary">
+            <Button onClick={() => setEditTagsModalIsOpen(true)} variant="outline-secondary">
               Edit Tags
             </Button>
           </Stack>
@@ -100,11 +97,11 @@ export function NoteList({ availableTags, notes, onUpdateTag, onDeleteTag }: Not
         ))}
       </Row>
       <EditTagsModal
-        show={show}
-        handleClose={() => setShow(false)}
-        availableTags={availableTags}
         onUpdateTag={onUpdateTag}
         onDeleteTag={onDeleteTag}
+        show={editTagsModalIsOpen}
+        handleClose={() => setEditTagsModalIsOpen(false)}
+        availableTags={availableTags}
       />
     </>
   );
@@ -136,40 +133,38 @@ function NoteCard({ id, title, tags }: SimplifiedNote) {
 
 function EditTagsModal({
   availableTags,
-  show,
   handleClose,
-  onUpdateTag,
+  show,
   onDeleteTag,
+  onUpdateTag,
 }: EditTagsModalProps) {
   return (
-    <>
-      <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Edit Tags</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form>
-            <Stack gap={2}>
-              {availableTags.map((tag) => (
-                <Row key={tag.id}>
-                  <Col>
-                    <Form.Control
-                      type="text"
-                      value={tag.label}
-                      onChange={(e) => onUpdateTag(tag.id, e.target.value)}
-                    />
-                  </Col>
-                  <Col xs="auto">
-                    <Button onClick={() => onDeleteTag(tag.id)} variant="outline-danger">
-                      &times;
-                    </Button>
-                  </Col>
-                </Row>
-              ))}
-            </Stack>
-          </Form>
-        </Modal.Body>
-      </Modal>
-    </>
+    <Modal show={show} onHide={handleClose}>
+      <Modal.Header closeButton>
+        <Modal.Title>Edit Tags</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <Form>
+          <Stack gap={2}>
+            {availableTags.map((tag) => (
+              <Row key={tag.id}>
+                <Col>
+                  <Form.Control
+                    type="text"
+                    value={tag.label}
+                    onChange={(e) => onUpdateTag(tag.id, e.target.value)}
+                  />
+                </Col>
+                <Col xs="auto">
+                  <Button onClick={() => onDeleteTag(tag.id)} variant="outline-danger">
+                    &times;
+                  </Button>
+                </Col>
+              </Row>
+            ))}
+          </Stack>
+        </Form>
+      </Modal.Body>
+    </Modal>
   );
 }
