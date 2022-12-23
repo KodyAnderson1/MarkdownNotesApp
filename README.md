@@ -2,12 +2,16 @@
 
 URL: [Link to App](https://notesapp-c9688.web.app/)
 
+[Tutorial I followed](https://www.youtube.com/watch?v=j898RGRw0b4&t=1s)
+
 ## Concept / Project Overview
-TO BE ADDED
+This note-taking application uses a react library to implement markdown in the body to style the text as the user sees fit. It can search by the title of the notes or by the tags the user creates when making or editing the note. Tags are also able to be edited or deleted. End goal of this project will be to connect itself to a database instead of using local storage.
 
 ## Languages and Libraries
 - TypeScript
 - React
+  - React Router
+  - React Markdown
 - Bootstrap
 - CSS
 - HTML
@@ -18,3 +22,4 @@ To install on your local machine, pull the GitHub repo, navigate into the projec
 
 ## Future Development
 - Integrate this application into my grade tracker app to provide the start of a student focused "one stop shop" app to track grades, manage to-do lists, etc...
+- Database integration
